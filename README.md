@@ -60,7 +60,7 @@ a database dump file and/or other clear files available for recreation of your d
 ![Teacher view](teacher-view.png)<br />
 ![Teacher Edit Users](teacher-edit-users.png)<br />
 ![Teacher Enroll Students](enroll-students.png)<br />
-![Course Management](cource-management.png)<br />
+![Course Management](course-management.png)<br />
 
 #### Students
 id - (primary) integer unique,<br />
