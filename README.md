@@ -6,17 +6,17 @@ Create a web application where instructors can manage courses and content, while
 
 [Link to a live project.](https://github.com/alexcheva/)
 
-![Registration](register.png)<br />
-![Log in](sign-in.png)<br />
-![Teacher view](teacher-view.png)<br />
-![Teacher Edit Users](teacher-edit-users.png)<br />
-![Teacher Enroll Students](enroll-students.png)<br />
-![Teacher Course Management](course-management.png)<br />
-![Teacher Grades](teacher-grades.png)<br />
-![Student View](student-view.png)<br />
-![Student Edit](student-edit-user.png)<br />
-![Student Course Management](student-courses.png)<br />
-![Student Grades](student-grades.png)<br />
+![Registration](./wireframes/register.png)<br />
+![Log in](./wireframes/sign-in.png)<br />
+![Teacher view](./wireframes/teacher-view.png)<br />
+![Teacher Edit Users](./wireframes/teacher-edit-users.png)<br />
+![Teacher Enroll Students](./wireframes/enroll-students.png)<br />
+![Teacher Course Management](./wireframes/course-management.png)<br />
+![Teacher Grades](./wireframes/teacher-grades.png)<br />
+![Student View](./wireframes/student-view.png)<br />
+![Student Edit](./wireframes/student-edit-user.png)<br />
+![Student Course Management](./wireframes/student-courses.png)<br />
+![Student Grades](./wireframes/student-grades.png)<br />
 
 ## Features:
 - CRUD operations (Create, Read, Update, Delete)
