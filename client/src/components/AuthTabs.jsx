@@ -1,5 +1,15 @@
 import React, { useState } from "react";
 import axios from "axios";
+import {
+  Box,
+  TextField,
+  Button,
+  Container,
+  MenuItem,
+  FormControlLabel,
+  Radio,
+  RadioGroup,
+} from "@mui/material";
 
 function AuthTabs() {
   const [activeTab, setActiveTab] = useState("register");
@@ -12,127 +22,119 @@ function AuthTabs() {
   });
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const url =
+    const endpoint =
       activeTab === "register"
         ? "http://localhost:9000/api/register"
         : "http://localhost:9000/api/login";
 
-    try {
-      const res = await axios.post(url, formData);
-      alert(`${activeTab === "register" ? "Registered" : "Logged in"} successfully!`);
-      console.log(res.data);
-      console.log("Logged in as a "+ res.data.user.role);
-    } catch (err) {
-      alert("Error: " + err.response.data.error);
-    }
+    const res = await fetch(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
+
+    const data = await res.json();
+    console.log(data);
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 border rounded shadow">
-      <div className="flex mb-4 border-b">
-        <button
-          className={`flex-1 py-2 font-semibold ${
-            activeTab === "register" ? "border-b-2 border-blue-500" : ""
-          }`}
-          onClick={() => setActiveTab("register")}
+   <Container maxWidth="sm">
+        <Box sx={{ display: "flex", gap: 2, justifyContent: "center", mt: 4 }}>
+      <Button
+        variant={activeTab === "login" ? "contained" : "outlined"}
+        onClick={() => setActiveTab("login")}
+      >
+        Log in
+      </Button>
+      <Button
+        variant={activeTab === "register" ? "contained" : "outlined"}
+        onClick={() => setActiveTab("register")}
+      >
+        Register
+      </Button>
+    </Box>
+      <Box sx={{ mt: 6 }}>
+
+        <Box
+          component="form"
+          onSubmit={handleSubmit}
+          sx={{ mt: 4, display: "flex", flexDirection: "column", gap: 2 }}
         >
-          Register
-        </button>
-        <button
-          className={`flex-1 py-2 font-semibold ${
-            activeTab === "login" ? "border-b-2 border-blue-500" : ""
-          }`}
-          onClick={() => setActiveTab("login")}
-        >
-          Login
-        </button>
-      </div>
-
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {activeTab === "register" && (
-          <>
-            <input
-              type="text"
-              name="name"
-              placeholder="Full name"
-              value={formData.name}
-              onChange={handleChange}
-              className="w-full border rounded p-2"
-              required
-            />
-
-            <div>
-              <label className="mr-4">
-                <input
-                  type="radio"
-                  name="role"
-                  value="student"
-                  checked={formData.role === "student"}
-                  onChange={handleChange}
-                />{" "}
-                Student
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  name="role"
-                  value="teacher"
-                  checked={formData.role === "teacher"}
-                  onChange={handleChange}
-                />{" "}
-                Teacher
-              </label>
-            </div>
-
-            {formData.role === "student" && (
-              <select
-                name="major"
-                value={formData.major}
+          {activeTab === "register" && (
+            <>
+              <TextField 
+                variant="filled"
+                label="Name"
+                name="name"
+                value={formData.name}
                 onChange={handleChange}
-                className="w-full border rounded p-2"
+                required
+              />
+
+              <RadioGroup
+                row
+                name="role"
+                value={formData.role}
+                onChange={handleChange}
               >
-                <option value="">Select Major</option>
-                <option value="Computer Science">Computer Science</option>
-                <option value="Design">Design</option>
-                <option value="Mathematics">Mathematics</option>
-              </select>
-            )}
-          </>
-        )}
+                <FormControlLabel
+                  value="student"
+                  control={<Radio />}
+                  label="Student"
+                />
+                <FormControlLabel
+                  value="teacher"
+                  control={<Radio />}
+                  label="Teacher"
+                />
+              </RadioGroup>
 
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={formData.email}
-          onChange={handleChange}
-          className="w-full border rounded p-2"
-          required
-        />
+              {formData.role === "student" && (
+                <TextField
+                  select
+                  label="Major"
+                  name="major"
+                  value={formData.major}
+                  onChange={handleChange}
+                >
+                  <MenuItem value="Computer Science">Computer Science</MenuItem>
+                  <MenuItem value="Mathematics">Mathematics</MenuItem>
+                  <MenuItem value="Engineering">Engineering</MenuItem>
+                </TextField>
+              )}
+            </>
+          )}
 
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={formData.password}
-          onChange={handleChange}
-          className="w-full border rounded p-2"
-          required
-        />
+          <TextField
+           variant="filled"
+            label="Email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
+          <TextField
+            variant="filled"
+            label="Password"
+            name="password"
+            type="password"
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
 
-        <button
-          type="submit"
-          className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded w-full"
-        >
-          {activeTab === "register" ? "Register" : "Login"}
-        </button>
-      </form>
-    </div>
+          <Button type="submit" variant="contained" size="large">
+            {activeTab === "login" ? "Log In" : "Register"}
+          </Button>
+        </Box>
+      </Box>
+    </Container>
   );
 }
 
