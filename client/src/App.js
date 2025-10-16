@@ -1,22 +1,25 @@
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import './App.css';
+import AuthTabs from "./components/AuthTabs";
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
+        {/* <img src={logo} className="Edu-logo" alt="logo" /> */}
+        <h1>
          Welcome to EduPortal.
-        </p>
-        <a
+        </h1>
+        {/* <RegisterForm /> */}
+        {/* <a
           className="App-link"
           href="https://reactjs.org"
           target="_blank"
           rel="noopener noreferrer"
         >
           Learn React
-        </a>
+        </a> */}
+      <AuthTabs />
       </header>
     </div>
   );
