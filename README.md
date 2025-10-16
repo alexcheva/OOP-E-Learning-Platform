@@ -11,7 +11,12 @@ Create a web application where instructors can manage courses and content, while
 ![Teacher view](teacher-view.png)<br />
 ![Teacher Edit Users](teacher-edit-users.png)<br />
 ![Teacher Enroll Students](enroll-students.png)<br />
-![Course Management](course-management.png)<br />
+![Teacher Course Management](course-management.png)<br />
+![Teacher Grades](teacher-grades.png)<br />
+![Student View](student-view.png)<br />
+![Student Edit](student-edit-user.png)<br />
+![Student Course Management](student-courses.png)<br />
+![Student Grades](student-grades.png)<br />
 
 ## Features:
 - CRUD operations (Create, Read, Update, Delete)
