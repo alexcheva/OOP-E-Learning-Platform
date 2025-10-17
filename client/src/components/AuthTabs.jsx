@@ -28,11 +28,12 @@ function AuthTabs({ onLoginSuccess }) {
 
     const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(e, activeTab);
     const endpoint =
       activeTab === "register"
         ? "http://localhost:9000/api/register"
         : "http://localhost:9000/api/login";
-
+    
     try {
       const res = await fetch(endpoint, {
         method: "POST",

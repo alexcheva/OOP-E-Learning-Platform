@@ -160,6 +160,18 @@ CREATE TABLE users (
 );
 ```
 
+#### Courses
+
+``` sql
+CREATE TABLE courses (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  credits INTEGER NOT NULL CHECK (credits > 0),
+  enrollment_limit INTEGER NOT NULL CHECK (enrollment_limit >= 0),
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT now()
+);
+```
+
 ## 🧠 Available Scripts
 ### Backend (server)
 
