@@ -1,24 +1,21 @@
 // import logo from './logo.svg';
 import './App.css';
-import AuthTabs from "./components/AuthTabs";
-import { Container, Typography } from "@mui/material";
-import SchoolIcon from "@mui/icons-material/School";
+import { useState } from "react";
+import Landing from './pages/Landing';
+import Login from './pages/Login';
 
 function App() {
+  const [user, setUser] = useState(null);
+
+  console.log(`User: ${user}`)
+
   return (
     <div className="App">
-      <header className="App-header">
-        <Container maxWidth="md" sx={{ textAlign: "center", mt: 10 }}>
-          <SchoolIcon sx={{ fontSize: 60, color: "primary.main", mb: 2 }} />
-          <Typography variant="h3" gutterBottom>
-            Welcome to EduPortal
-          </Typography>
-          <Typography variant="h6" color="text.secondary" gutterBottom>
-            A smarter way to manage your courses and grades.
-          </Typography>
-
-        </Container>
-        {/* <RegisterForm /> */}
+      {user ? (
+        <Landing user={user} />
+      ) : (
+        <Login onLoginSuccess={(u) => setUser(u)} />
+      )}
         {/* <a
           className="App-link"
           href="https://reactjs.org"
@@ -27,8 +24,6 @@ function App() {
         >
           Learn React
         </a> */}
-      <AuthTabs />
-      </header>
     </div>
   );
 }

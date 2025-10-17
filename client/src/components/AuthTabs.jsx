@@ -11,8 +11,8 @@ import {
   RadioGroup,
 } from "@mui/material";
 
-function AuthTabs() {
-  const [activeTab, setActiveTab] = useState("register");
+function AuthTabs({ onLoginSuccess }) {
+  const [activeTab, setActiveTab] = useState("login");
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -26,21 +26,32 @@ function AuthTabs() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e) => {
+    const handleSubmit = async (e) => {
     e.preventDefault();
     const endpoint =
       activeTab === "register"
         ? "http://localhost:9000/api/register"
         : "http://localhost:9000/api/login";
 
-    const res = await fetch(endpoint, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    });
+    try {
+      const res = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
 
-    const data = await res.json();
-    console.log(data);
+      const data = await res.json();
+
+      if (res.ok) {
+        console.log(`AuthTabs data ${data} user ${data.user}`)
+        onLoginSuccess(data.user); // pass user object up
+      } else {
+        alert(data.message || "Error during authentication");
+      }
+      } catch (err) {
+        console.error(err);
+        alert("Server error. Please try again later.");
+      }
   };
 
   return (
