@@ -87,40 +87,78 @@ Make sure you have the following installed:
 git clone https://github.com/alexcheva/OOP-E-Learning-Platform.git
 cd OOP-E-Learning-Platform
 ```
-### 2. Set Up the Server
+### 2. Set Up Servers
+From the root directory of the project, install all dependencies for both server and client:
 
+#### Install backend dependencies
 ```bash
-cd server
 npm install
 ```
 
-Create a .env file in the server/ directory:
-
-``` env
-PORT=5000
-DATABASE_URL=postgresql://username:password@localhost:5432/pern_demo
+#### Install frontend (React) dependencies
+```bash
+npm install --prefix client
 ```
-Run the backend:
+#### Start the Servers
 
-``` bash
+You can run the backend, frontend, or both from the root directory using the predefined npm scripts.
+
+Start Backend Only:
+```bash
+npm run server
+```
+
+Uses nodemon to auto-reload on code changes.
+
+Start Frontend Only:
+```bash
+npm run client
+```
+
+Start Both Backend and Frontend Simultaneously:
+```bash
 npm run dev
 ```
-✅ Your API should be running at http://localhost:5000
+
+Uses concurrently to run backend and frontend at the same time.
 
 
-### 3. Set Up the Client
-``` bash
 
-cd ../client
-npm install
-npm start
-```
+✅ Your server should be running at http://localhost:9000
+
 ✅ React app runs at http://localhost:3000
 
 
+## 3. Set Up Database
+a database dump file and/or other clear files available for recreation of your database environment.
 
+```bash
+psql
+```
+Then run:
+``` sql
+CREATE ROLE app_user WITH LOGIN PASSWORD 'change_me';
+CREATE DATABASE eduportal OWNER app_user;
+```
 
-💡 You can connect using psql, PgAdmin, or a GUI like TablePlus / DBeaver.
+Create a ``.env`` file in the server/ directory:
+``` env
+PORT=9000
+DATABASE_URL=postgres://app_user:change_me@localhost:5432/eduportal
+```
+
+#### Users
+
+``` sql
+CREATE TABLE users (
+ id SERIAL PRIMARY KEY,
+ name VARCHAR(100) NOT NULL,
+ email VARCHAR(100) UNIQUE NOT NULL,
+ password VARCHAR(100) NOT NULL,
+ role VARCHAR(20) NOT NULL,
+ major VARCHAR(100)
+);
+```
 
 ## 🧠 Available Scripts
 ### Backend (server)
@@ -145,57 +183,19 @@ a concise summary of the necessary dependencies included in the project:
 | **pg**      | PostgreSQL client                  | Interact with your database |
 
 
-## Database setup:
-a database dump file and/or other clear files available for recreation of your database environment, 
-
-#### Students
-id - (primary) integer unique,<br />
-fname - varchar required,<br />
-lname - varchar optional unique,<br />
-email - varchar optional unique<br />
-
-
-``` sql
-CREATE TABLE students (
-  id SERIAL PRIMARY KEY,
-  fname VARCHAR (50) NOT NULL,
-  lname VARCHAR (100) NULL UNIQUE,
-  email VARCHAR NULL UNIQUE
-);
-```
-
 ## Sample Data:
 
 ``` sql
-INSERT INTO students (fname,lname,email)
- VALUES 
-  ('Camryn','Rodgers','pspoole@optonline.net'),
-  ('Leon','Oliver','sscorpio@aol.com'),
-  ('Cassie','Schneider','presoff@yahoo.com'),
-  ('Jamya','Simpson','claypool@yahoo.ca'),
-  ('Brennen','Oconnor','ahmad@yahoo.ca'),
-  ('Lauren','Lynn','yangyan@sbcglobal.net'),
-  ('Lucy','Barker','esbeck@verizon.net');
+
  ```
-
-### Extra Data to add:
-
-Roman  
-Spencer  
-fraterk@sbcglobal.net
-
-### To test adding existing value:
-Lucy  
-Barker  
-esbeck@verizon.net
-
 
 ## Routes 
 and any authentication/authorization included
  | Method   | Endpoint         | Description       |
 | -------- | ---------------- | ----------------- |
+| `POST`   | `/login`         | User log in       |
+| `POST`   | `/register`      | Create a new user |
 | `GET`    | `/api/users`     | Get all users     |
-| `POST`   | `/api/users`     | Create a new user |
 | `PUT`    | `/api/users/:id` | Update user       |
 | `DELETE` | `/api/users/:id` | Delete user       |
 

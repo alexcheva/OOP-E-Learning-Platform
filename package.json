@@ -1,0 +1,35 @@
+{
+  "name": "oop-e-learning-platform",
+  "version": "1.0.0",
+  "description": "Develop a comprehensive e-learning management system that enables instructors to create courses and students to enroll, participate, and track their progress. The application should demonstrate strong object-oriented programming principles and provide a seamless learning experience.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server/index.js",
+    "server": "nodemon server/index.js",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexcheva/OOP-E-Learning-Platform.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/alexcheva/OOP-E-Learning-Platform/issues"
+  },
+  "homepage": "https://github.com/alexcheva/OOP-E-Learning-Platform#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "pg": "^8.16.3"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "nodemon": "^3.1.10"
+  }
+}

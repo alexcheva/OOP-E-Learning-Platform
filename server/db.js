@@ -10,7 +10,6 @@ export const pool = new Pool({
 
 async function checkPoolConnection() {
   let client;
-  console.log("it's the database")
   try {
     client = await pool.connect(); // Get a client from the pool
     await client.query('SELECT 1'); // Execute a simple query
