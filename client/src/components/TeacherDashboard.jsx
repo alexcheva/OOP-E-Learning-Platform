@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import AddCourse from './AddCourse';
 import axios from 'axios';
+import { Box, TextField, Button, Typography, Container } from "@mui/material";
 
 export default function TeacherDashboard({ user }) {
   const [courses, setCourses] = useState([]);
@@ -16,11 +17,11 @@ export default function TeacherDashboard({ user }) {
 
   return (
     <div>
-      <h2 className="text-2xl font-bold mb-4">Welcome, {user.name} (Teacher)</h2>
-
       <section className="mb-6">
-        <h3 className="font-semibold text-xl mb-2">Add New Course</h3>
-        <AddCourse onAdded={() => fetchCourses()} />
+        <Button type="submit" variant="contained" size="large">
+          Add Course
+        </Button>
+        <AddCourse onCourseAdded={() => fetchCourses()} />
       </section>
 
       <section className="mb-6">
@@ -33,9 +34,10 @@ export default function TeacherDashboard({ user }) {
           ))}
         </ul>
       </section>
-
-      <section>
-        <h3 className="font-semibold text-xl mb-2">Manage Users</h3>
+      <section className="mb-6">
+        <Button type="submit" variant="contained" size="large">
+          Manage Users
+        </Button>
       </section>
     </div>
   );
