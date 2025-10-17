@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import { Box, TextField, Button, Typography, Container } from "@mui/material";
 
 export default function AddCourse({ onCourseAdded }) {
@@ -8,6 +9,8 @@ export default function AddCourse({ onCourseAdded }) {
     enrollment_limit: "",
   });
 
+  const navigate = useNavigate();
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -16,7 +19,7 @@ export default function AddCourse({ onCourseAdded }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const res = await fetch("/api/courses", {
+    const res = await fetch("http://localhost:9000/api/courses", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),
@@ -27,6 +30,7 @@ export default function AddCourse({ onCourseAdded }) {
       onCourseAdded && onCourseAdded(data);
       setFormData({ name: "", credits: "", enrollment_limit: "" });
       alert("Course added successfully!");
+      navigate("/");
     } else {
       alert("Failed to add course");
     }
@@ -71,7 +75,7 @@ export default function AddCourse({ onCourseAdded }) {
         />
 
         <Button type="submit" variant="contained" size="large">
-          Add Course
+            Add Course
         </Button>
       </Box>
     </Container>

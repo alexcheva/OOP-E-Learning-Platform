@@ -16,13 +16,13 @@ export default function Dashboard({ user, onLogout }) {
             ? "Teacher Dashboard"
             : "Student Dashboard"}
         </Typography>
-        <div className="p-6">
+        <Box sx={{ p: 2 }}>
             {user.role === 'teacher' ? (
             <TeacherDashboard user={user} />
             ) : (
             <StudentDashboard user={user} />
             )}
-        </div>
+        </Box>
       </Box>
     </Box>
   );

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import AddCourse from './AddCourse';
+import { Link } from "react-router-dom";
 import axios from 'axios';
 import { Box, TextField, Button, Typography, Container } from "@mui/material";
 
@@ -18,10 +18,11 @@ export default function TeacherDashboard({ user }) {
   return (
     <div>
       <section className="mb-6">
-        <Button type="submit" variant="contained" size="large">
+        <Button type="submit" variant="contained" size="large"
+        component={Link}
+        to="/add-course">
           Add Course
         </Button>
-        <AddCourse onCourseAdded={() => fetchCourses()} />
       </section>
 
       <section className="mb-6">
