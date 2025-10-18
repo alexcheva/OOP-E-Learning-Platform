@@ -44,11 +44,12 @@ export default function TeacherDashboard({ user }) {
       <Box sx={{ m: 2, }}>
         <Button type="submit" variant="contained" size="large"
         component={Link}
-        to="/"
+        to="/users"
         >
           Edit Users
         </Button>
-        <h3 className="font-semibold text-xl mb-2">All Users</h3>
+        <h3 className="font-semibold text-xl mb-2">
+          All Users</h3>
          <ul>
           {users.map(u => (
             <li key={u.id}>

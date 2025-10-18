@@ -6,6 +6,7 @@ import Login from './pages/Login';
 import Dashboard from "./components/Dashboard";
 import AddCourse from "./components/AddCourse";
 import AllCourses from "./components/AllCourses";
+import AllUsers from "./components/AllUsers";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -27,6 +28,9 @@ function App() {
 
             {/* View all courses */}
             <Route path="/courses" element={<AllCourses />} />
+
+            {/* View all users */}
+            <Route path="/users" element={<AllUsers />} />
 
             {/* Redirect any unknown route */}
             <Route path="*" element={<Navigate to="/" replace />} />
