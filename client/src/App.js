@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import Login from './pages/Login';
 import Dashboard from "./components/Dashboard";
 import AddCourse from "./components/AddCourse";
-// import AllCourses from "./components/AllCourses";
+import AllCourses from "./components/AllCourses";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -26,7 +26,7 @@ function App() {
             <Route path="/add-course" element={<AddCourse />} />
 
             {/* View all courses */}
-            {/* <Route path="/courses" element={<AllCourses />} /> */}
+            <Route path="/courses" element={<AllCourses />} />
 
             {/* Redirect any unknown route */}
             <Route path="*" element={<Navigate to="/" replace />} />

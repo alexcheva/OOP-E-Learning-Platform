@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import axios from 'axios';
-import { Box, TextField, Button, Typography, Container } from "@mui/material";
+import { Box, Button } from "@mui/material";
 
 export default function TeacherDashboard({ user }) {
   const [courses, setCourses] = useState([]);
@@ -17,29 +17,32 @@ export default function TeacherDashboard({ user }) {
 
   return (
     <div>
-      <section className="mb-6">
+      <Box sx={{ m: 2, }}>
         <Button type="submit" variant="contained" size="large"
         component={Link}
         to="/add-course">
           Add Course
         </Button>
-      </section>
-
-      <section className="mb-6">
-        <h3 className="font-semibold text-xl mb-2">All Courses</h3>
-         <ul>
-          {courses.map(c => (
-            <li key={c.id}>
-              {c.name} — {c.credits} credits — limit {c.enrollment_limit}
-            </li>
-          ))}
-        </ul>
-      </section>
-      <section className="mb-6">
-        <Button type="submit" variant="contained" size="large">
-          Manage Users
+      </Box>
+      <Box sx={{ m: 2, }}>
+        <Button type="submit" variant="contained" size="large"
+        component={Link}
+        to="/courses">
+          Course Management
         </Button>
-      </section>
+      </Box>
+      <Box sx={{ m: 2, }}>
+        <Button type="submit" variant="contained" size="large"
+        component={Link}
+        to="/courses">
+          Grades
+        </Button>
+      </Box>
+      <Box sx={{ m: 2, }}>
+        <Button type="submit" variant="contained" size="large">
+          Edit Users
+        </Button>
+      </Box>
     </div>
   );
 }
