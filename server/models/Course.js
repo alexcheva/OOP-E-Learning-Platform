@@ -33,11 +33,13 @@ export default class Course {
   }
 
   async update() {
+    console.log("update in STUDENT CALLED")
     const res = await pool.query(
       `UPDATE courses SET name = $1, credits = $2, enrollment_limit = $3
        WHERE id = $4 RETURNING *`,
       [this.name, this.credits, this.enrollment_limit, this.id]
     );
+    console.log("course.js:::", res)
     return new Course(res.rows[0]);
   }
 

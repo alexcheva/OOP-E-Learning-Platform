@@ -13,9 +13,17 @@ import {
   Container,
 } from "@mui/material";
 import { Edit, Delete } from "@mui/icons-material";
+import EditCourseModal from "../components/EditCourseModal";
+import DeleteCourseModal from "../components/DeleteCourseModal";
 
 export default function AllCourses() {
   const [courses, setCourses] = useState([]);
+  const [selectedCourse, setSelectedCourse] = useState(null);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+
+  // console.log(courses);
+  console.log(selectedCourse);
 
   const fetchCourses = async () => {
     const res = await fetch("http://localhost:9000/api/courses");
@@ -23,19 +31,56 @@ export default function AllCourses() {
     setCourses(data);
   };
 
-  const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this course?")) return;
-    const res = await fetch(`/api/courses/${id}`, { method: "DELETE" });
-    if (res.ok) {
-      setCourses((prev) => prev.filter((c) => c.id !== id));
-    } else {
-      alert("Failed to delete course");
-    }
+  const handleDeleteOpen = async (course_id) => {
+    setSelectedCourse(course_id);
+    setIsDeleteOpen(true);
   };
 
-  const handleEdit = (id) => {
-    alert(`Edit course ${id} (you can expand this later with a modal form)`);
+  const handleDeleteConfirm = async (id) => {
+    console.log("handleDeleteConfirm", id)
+    await fetch(`http://localhost:9000/api/courses/${id}`, { method: "DELETE" });
+    setIsDeleteOpen(false);
+    fetchCourses();
   };
+
+  const handleEditOpen = (course_id) => {
+    setSelectedCourse(course_id);
+    setIsEditOpen(true);
+  };
+
+  const handleEditSave = async (course) => {
+    console.log("Save edit clicked!", course, course.id,JSON.stringify(course),JSON.stringify({
+          name: course.name,
+          credits: course.credits,
+          enrollment_limit: course.enrollment_limit,
+          }));
+    try {
+
+      const response = await fetch(`http://localhost:9000/api/courses/${course.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: course.name,
+          credits: course.credits,
+          enrollment_limit: course.enrollment_limit,
+          }),
+        });
+      
+      const data = await response.json();
+      if (response.ok) {
+        console.log("✅ Updated course:", data.course);
+      } else {
+        console.error("❌ Error:", data.message);
+      }
+    } catch (error) {
+      console.error("Update failed:", error);
+    }
+
+    setIsEditOpen(false);
+    console.log("fetching courses");
+    fetchCourses();
+  };
+  
 
   useEffect(() => {
     fetchCourses();
@@ -66,10 +111,13 @@ export default function AllCourses() {
                 <TableCell>{course.credits}</TableCell>
                 <TableCell>{course.enrollment_limit}</TableCell>
                 <TableCell>
-                  <IconButton color="primary" onClick={() => handleEdit(course.id)}>
+                  <IconButton color="primary" onClick={() => {
+                    console.log("edit button clicked", course.id);
+                    handleEditOpen(course.id);
+                    }}>
                     <Edit />
                   </IconButton>
-                  <IconButton color="error" onClick={() => handleDelete(course.id)}>
+                  <IconButton color="error" onClick={() => handleDeleteOpen(course.id)}>
                     <Delete />
                   </IconButton>
                 </TableCell>
@@ -84,6 +132,21 @@ export default function AllCourses() {
           <Typography>No courses available.</Typography>
         </Box>
       )}
+
+    <DeleteCourseModal
+      open={isDeleteOpen}
+      course={courses[selectedCourse-1]}
+      onClose={() => setIsDeleteOpen(false)}
+      onConfirm={handleDeleteConfirm}
+    />
+
+    <EditCourseModal
+      open={isEditOpen}
+      course={courses[selectedCourse-1]}
+      onClose={() => setIsEditOpen(false)}
+      onSave={handleEditSave}
+    />
+
     </Container>
   );
 }

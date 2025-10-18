@@ -52,4 +52,16 @@ export default class CourseController {
       res.status(500).json({ error: 'Server error' });
     }
   }
+
+  static async updateCourse(req, res) {
+    console.log("calling update course");
+    console.log("Incoming update data:", req.body, "params:", req.params, "id:", req.params.id);
+    try {
+      const course = await Course.update(req.params.id);
+      if (!course) return res.status(404).json({ error: 'Course not found' });
+      res.json(course);
+    } catch (err) {
+      res.status(500).json({ error: 'Server error' });
+    }
+  }
 }
