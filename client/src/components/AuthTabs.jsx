@@ -27,7 +27,6 @@ function AuthTabs({ onLoginSuccess }) {
 
     const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(e, activeTab);
     const endpoint =
       activeTab === "register"
         ? "http://localhost:9000/api/register"
@@ -43,7 +42,6 @@ function AuthTabs({ onLoginSuccess }) {
       const data = await res.json();
 
       if (res.ok) {
-        console.log(`AuthTabs data ${data} user ${data.user}`)
         onLoginSuccess(data.user); // pass user object up
       } else {
         alert(data.message || "Error during authentication");
