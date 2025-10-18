@@ -32,8 +32,8 @@ export default class Course {
     return new Course(row);
   }
 
-  async update() {
-    console.log("update in STUDENT CALLED")
+  static async update() {
+    console.log("update in COURSE CALLED")
     const res = await pool.query(
       `UPDATE courses SET name = $1, credits = $2, enrollment_limit = $3
        WHERE id = $4 RETURNING *`,
@@ -43,7 +43,11 @@ export default class Course {
     return new Course(res.rows[0]);
   }
 
-  async delete() {
-    await pool.query('DELETE FROM courses WHERE id = $1', [this.id]);
+  static async delete(id) {
+    console.log("DELETE in COURSE CALLED");
+    const res = await pool.query('DELETE FROM courses WHERE id = $1', [id]);
+    console.log("DELETE IN COURSE JS RES:", res)
+     // return the deleted row (or null if not found)
+    return result.rows[0] || null;
   }
 }

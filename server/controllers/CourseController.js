@@ -53,9 +53,30 @@ export default class CourseController {
     }
   }
 
+  static async deleteById(req, res) {
+    console.log("calling deleteById course");
+    console.log("Incoming deleteById data:", "id:", req.params.id);
+
+    try {
+      const course = await Course.delete(req.params.id);
+
+      if (!course) {
+        return res.status(404).json({ error: "Course not found" });
+      }
+
+      res.json({
+        message: "Course deleted successfully",
+        course,
+      });
+    } catch (err) {
+      console.error("Error deleting course:", err.message);
+      res.status(500).json({ error: "Server error" });
+    }
+  }
+
   static async updateCourse(req, res) {
     console.log("calling update course");
-    console.log("Incoming update data:", req.body, "params:", req.params, "id:", req.params.id);
+    console.log("Incoming update data:", req.params.id);
     try {
       const course = await Course.update(req.params.id);
       if (!course) return res.status(404).json({ error: 'Course not found' });

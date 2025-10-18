@@ -38,7 +38,9 @@ export default function AllCourses() {
 
   const handleDeleteConfirm = async (id) => {
     console.log("handleDeleteConfirm", id)
-    await fetch(`http://localhost:9000/api/courses/${id}`, { method: "DELETE" });
+    const res = await fetch(`http://localhost:9000/api/courses/${id}`, { method: "DELETE" });
+    const data = await res.json();
+    console.log("returning data", data);
     setIsDeleteOpen(false);
     fetchCourses();
   };
