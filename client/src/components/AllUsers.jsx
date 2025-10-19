@@ -27,6 +27,21 @@ export default function AllUsers() {
     setUsers(data);
   };
 
+  const handleEditUser = async (id) => {
+    console.log("edit user id", id);
+    const res = await fetch(`http://localhost:9000/api/users/${id}`);
+    const data = await res.json();
+    console.log("returning data", data);
+  }
+
+  const handleDeleteUser = async (id) => {
+    console.log("delete user id", id)
+    if (!window.confirm("Are you sure you want to delete this user?")) return;
+    const res = await fetch(`http://localhost:9000/api/users/${id}`, { method: "DELETE" });
+    console.log(res);
+    fetchUsers();
+  };
+
   useEffect(() => {
     fetchUsers();
   }, []);
@@ -61,7 +76,7 @@ export default function AllUsers() {
                   <IconButton color="primary" onClick={() => {
                     console.log("edit button clicked", user.id);
                     setSelectedUserID(user.id);
-                    // handleEditUser(user.id);
+                    handleEditUser(user.id);
                     }}>
                     <Edit />
                   </IconButton>
@@ -69,7 +84,7 @@ export default function AllUsers() {
                     {
                       console.log("delete button clicked", user.id);
                       setSelectedUserID(user.id);
-                      // handleDeleteUser(users.id);
+                      handleDeleteUser(user.id);
                     }
                     }>
                     <Delete />

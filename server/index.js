@@ -12,7 +12,7 @@ app.use(cors());
 app.use(express.json());
 app.use("/api", authRoutes);
 app.use('/api/courses', courseRoutes);
-app.get("/api/users", userRoutes);
+app.use("/api/users", userRoutes);
 
 app.get('/', (req, res) => {
   res.json({ message: 'Server running on Node 24!' });
