@@ -13,31 +13,32 @@ import {
   Container,
 } from "@mui/material";
 import { Edit, Delete } from "@mui/icons-material";
+import EditModal from "./modals/EditModal";
 
 export default function AllUsers() {
+  const endpoint = "http://localhost:9000/api/users"
   const [users, setUsers] = useState([]);
-  const [selectedUserID, setSelectedUserID] = useState(null);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const userFields = [
+    { name: "name", label: "User Name" },
+    { name: "email", label: "Email" },
+    { name: "role", label: "Role" },
+    { name: "major", label: "Major" }, // TODO expand to dropdown
+  ];
 
   console.log("users",users);
-  console.log("selectedUserID", selectedUserID);
+  console.log("selectedUser", selectedUser);
 
   const fetchUsers = async () => {
-    const res = await fetch("http://localhost:9000/api/users");
+    const res = await fetch(endpoint);
     const data = await res.json();
     setUsers(data);
   };
 
-  const handleEditUser = async (id) => {
-    console.log("edit user id", id);
-    const res = await fetch(`http://localhost:9000/api/users/${id}`);
-    const data = await res.json();
-    console.log("returning data", data);
-  }
-
   const handleDeleteUser = async (id) => {
     console.log("delete user id", id)
     if (!window.confirm("Are you sure you want to delete this user?")) return;
-    const res = await fetch(`http://localhost:9000/api/users/${id}`, { method: "DELETE" });
+    const res = await fetch(`${endpoint}/${id}`, { method: "DELETE" });
     console.log(res);
     fetchUsers();
   };
@@ -67,23 +68,21 @@ export default function AllUsers() {
           <TableBody>
             {users.map((user) => (
               <TableRow key={user.id}>
-                <TableCell>{user.id}</TableCell>
+                <TableCell>{user.id}</TableCell>{/*TODO replace with row numbers */}
                 <TableCell>{user.name}</TableCell>
                 <TableCell>{user.email}</TableCell>
                 <TableCell>{user.role}</TableCell>
                 <TableCell>{user.major}</TableCell>
                 <TableCell>
                   <IconButton color="primary" onClick={() => {
-                    console.log("edit button clicked", user.id);
-                    setSelectedUserID(user.id);
-                    handleEditUser(user.id);
+                    console.log("edit button clicked", user);
+                    setSelectedUser(user);
                     }}>
                     <Edit />
                   </IconButton>
                   <IconButton color="error" onClick={() => 
                     {
                       console.log("delete button clicked", user.id);
-                      setSelectedUserID(user.id);
                       handleDeleteUser(user.id);
                     }
                     }>
@@ -100,6 +99,18 @@ export default function AllUsers() {
         <Box textAlign="center" mt={3}>
           <Typography>No users available.</Typography>
         </Box>
+      )}
+
+      {selectedUser && (
+        <EditModal
+          isOpen={!!selectedUser}
+          onClose={() => setSelectedUser(null)}
+          entityName="user"
+          data={selectedUser}
+          fields={userFields}
+          endpoint={endpoint}
+          onSave={()=>{fetchUsers()}}
+        />
       )}
     </Container>
   );

@@ -29,4 +29,22 @@ export default class User {
      // return the deleted row (or null if not found)
     return res.rows[0] || null;
   }
+
+    static async update(id, { name, email, role, major }) {
+    console.log("update in USER CALLED")
+    try {
+        const res = await pool.query(
+        `UPDATE users SET name = $1, email = $2 , role = $3, major = $4
+        WHERE id = $5 RETURNING *`,
+        [name, email, role, major, id]
+      );
+      
+      // If no user was updated, return null
+      return res.rows[0] || null;
+
+    } catch (error) {
+      console.error("Error updating user:", error.message);
+      throw error;
+    }
+  }
 }

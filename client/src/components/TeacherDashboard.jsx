@@ -15,7 +15,7 @@ export default function TeacherDashboard({ user }) {
     console.log("TeacherDashboard fetchUsers res:", res)
     setUsers(res.data);
   }
-  console.log(users);
+  // console.log(users);
 
   return (
     <div>
@@ -51,11 +51,11 @@ export default function TeacherDashboard({ user }) {
         <h3 className="font-semibold text-xl mb-2">
           All Users</h3>
          <ul>
-          {users.map(u => (
+          {/* {users.map(u => (
             <li key={u.id}>
               {u.name} — {u.email} — role {u.student} - major: {u.major}
             </li>
-          ))}
+          ))} */}
         </ul>
 
       </Box>
