@@ -32,15 +32,22 @@ export default class Course {
     return new Course(row);
   }
 
-  static async update() {
+  static async update(id, { name, credits, enrollment_limit }) {
     console.log("update in COURSE CALLED")
-    const res = await pool.query(
-      `UPDATE courses SET name = $1, credits = $2, enrollment_limit = $3
-       WHERE id = $4 RETURNING *`,
-      [this.name, this.credits, this.enrollment_limit, this.id]
-    );
-    console.log("course.js:::", res)
-    return new Course(res.rows[0]);
+    try {
+        const res = await pool.query(
+        `UPDATE courses SET name = $1, credits = $2, enrollment_limit = $3
+        WHERE id = $4 RETURNING *`,
+        [name, credits, enrollment_limit, id]
+      );
+      
+      // If no course was updated, return null
+      return res.rows[0] || null;
+
+    } catch (error) {
+      console.error("Error updating course:", error.message);
+      throw error;
+    }
   }
 
   static async delete(id) {

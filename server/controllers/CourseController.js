@@ -74,15 +74,35 @@ export default class CourseController {
     }
   }
 
-  static async updateCourse(req, res) {
-    console.log("calling update course");
-    console.log("Incoming update data:", req.params.id);
+  static async updateById(req, res) {
+    console.log("calling updateById course");
+    console.log("Incoming update data:", req.body, "params:", req.params);
+
     try {
-      const course = await Course.update(req.params.id);
-      if (!course) return res.status(404).json({ error: 'Course not found' });
-      res.json(course);
+      const { id } = req.params;
+      const { name, credits, enrollment_limit } = req.body;
+
+      if (!name || !credits || !enrollment_limit) {
+        return res.status(400).json({ error: "Missing required fields" });
+      }
+
+      const updatedCourse = await Course.update(id, {
+        name,
+        credits,
+        enrollment_limit,
+      });
+
+      if (!updatedCourse) {
+        return res.status(404).json({ error: "Course not found" });
+      }
+
+      res.json({
+        message: "Course updated successfully",
+        course: updatedCourse,
+      });
     } catch (err) {
-      res.status(500).json({ error: 'Server error' });
+      console.error("Error in updateById:", err.message);
+      res.status(500).json({ error: "Server error" });
     }
   }
 }
