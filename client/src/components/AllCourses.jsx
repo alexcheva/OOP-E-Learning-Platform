@@ -12,20 +12,29 @@ import {
   Box,
   Container,
 } from "@mui/material";
+import axios from 'axios';
 import { Edit, Delete } from "@mui/icons-material";
-// import EditCourseModal from "../components/EditCourseModal";
 import EditModal from "./modals/EditModal";
 import DeleteCourseModal from "../components/DeleteCourseModal";
+import EnrollmentTable from "./EnrollmentTable";
 
 export default function AllCourses() {
   const [courses, setCourses] = useState([]);
+  const [enrollments, setEnrollments] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState(null);
+  console.log("courses", courses)
   // const [courseFields, setCourseFields] = useState([]);
   const courseFields = [
     { name: "name", label: "Course Name" },
     { name: "credits", label: "Credits", type: "number" },
     { name: "enrollment_limit", label: "Enrollment Limit", type: "number" },
   ];
+
+    useEffect(() => {
+    fetchCourses();
+    fetchEnrollments();
+  }, []);
+
   const endpoint = "http://localhost:9000/api/courses"
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
@@ -34,6 +43,13 @@ export default function AllCourses() {
     const data = await res.json();
     setCourses(data);
   };
+
+  async function fetchEnrollments() {
+    const res = await axios.get('http://localhost:9000/api/enrollments');
+    console.log("TeacherDashboard fetchEnrollments res:", res)
+    setEnrollments(res.data);
+  }
+  console.log("enrollments",enrollments);
 
   const handleDeleteOpen = async (course_id) => {
     setSelectedCourse(course_id);
@@ -48,10 +64,6 @@ export default function AllCourses() {
     setIsDeleteOpen(false);
     fetchCourses();
   };
-  
-  useEffect(() => {
-    fetchCourses();
-  }, []);
 
   return (
     <Container sx={{ mt: 4 }}>
@@ -66,16 +78,20 @@ export default function AllCourses() {
               <TableCell sx={{ color: "white" }}>ID</TableCell>
               <TableCell sx={{ color: "white" }}>Name</TableCell>
               <TableCell sx={{ color: "white" }}>Credits</TableCell>
+              <TableCell sx={{ color: "white" }}>Total Enrolled</TableCell>
               <TableCell sx={{ color: "white" }}>Enrollment Limit</TableCell>
               <TableCell sx={{ color: "white" }}>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {courses.map((course) => (
-              <TableRow key={course.id}>
+              <TableRow key={course.id} onClick={() => {
+                console.log("row clicked", course.id, setSelectedCourse(course))
+              }}>
                 <TableCell>{course.id}</TableCell>
                 <TableCell>{course.name}</TableCell>
                 <TableCell>{course.credits}</TableCell>
+                <TableCell>{course.total_enrolled}</TableCell>
                 <TableCell>{course.enrollment_limit}</TableCell>
                 <TableCell>
                   <IconButton color="primary" onClick={() => {
@@ -100,6 +116,15 @@ export default function AllCourses() {
           <Typography>No courses available.</Typography>
         </Box>
       )}
+    
+    {selectedCourse && (
+      <EnrollmentTable 
+        course={selectedCourse}
+        courses={courses}
+        fetchEnrollments={() => fetchEnrollments()}
+        students={enrollments[selectedCourse.id].students}
+      />
+      )}
 
     <DeleteCourseModal
       open={isDeleteOpen}
@@ -108,7 +133,7 @@ export default function AllCourses() {
       onConfirm={handleDeleteConfirm}
     />
 
-    {selectedCourse && (
+    {/* {selectedCourse && (
         <EditModal
           isOpen={!!selectedCourse}
           onClose={() => setSelectedCourse(null)}
@@ -118,8 +143,7 @@ export default function AllCourses() {
           endpoint={endpoint}
           onSave={()=>fetchCourses()}
         />
-      )}
-
+      )} */}
     </Container>
   );
 }
