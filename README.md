@@ -172,6 +172,20 @@ CREATE TABLE courses (
 );
 ```
 
+#### Enrollments
+``` sql
+ALTER TABLE users ADD COLUMN role VARCHAR(20) CHECK (role IN ('student', 'teacher'));
+```
+
+``` sql
+CREATE TABLE enrollments (
+  id SERIAL PRIMARY KEY,
+  student_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+  course_id INTEGER REFERENCES courses(id) ON DELETE CASCADE,
+  grade VARCHAR(5)
+);
+```
+
 ## 🧠 Available Scripts
 ### Backend (server)
 

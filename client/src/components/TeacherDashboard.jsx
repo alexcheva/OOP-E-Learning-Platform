@@ -5,9 +5,20 @@ import { Box, Button } from "@mui/material";
 
 export default function TeacherDashboard({ user }) {
   const [users, setUsers] = useState([]);
+  const [enrollments, setEnrollments] = useState([]);
+
+  const enrollmentData = [
+    {"id":1,
+    "student_id":1,
+    "course_id":1,
+    "grade":"Null",
+    "student_name":
+    "Alexandra Lukinicheva",
+    "course_name":"Intro to JavaScript"}]
 
   useEffect(() => {
     fetchUsers();
+    fetchEnrollments();
   }, []);
 
   async function fetchUsers() {
@@ -16,6 +27,13 @@ export default function TeacherDashboard({ user }) {
     setUsers(res.data);
   }
   // console.log(users);
+
+    async function fetchEnrollments() {
+    const res = await axios.get('http://localhost:9000/api/enrollments');
+    console.log("TeacherDashboard fetchEnrollments res:", res)
+    setEnrollments(res.data);
+  }
+  console.log("enrollments",enrollments);
 
   return (
     <div>
@@ -48,16 +66,6 @@ export default function TeacherDashboard({ user }) {
         >
           Edit Users
         </Button>
-        <h3 className="font-semibold text-xl mb-2">
-          All Users</h3>
-         <ul>
-          {/* {users.map(u => (
-            <li key={u.id}>
-              {u.name} — {u.email} — role {u.student} - major: {u.major}
-            </li>
-          ))} */}
-        </ul>
-
       </Box>
     </div>
   );
