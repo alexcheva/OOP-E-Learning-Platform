@@ -6,10 +6,12 @@ export default function NavBar ({ user, onLogout }) {
     return <p>Please log in.</p>;
   }
   return (
-    <Box>
+
   <AppBar position="static" color="primary">
     <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
+        <a href="/dashboard">
         <SchoolIcon sx={{ fontSize: 60, color: "white", m: 1, }} />
+        </a>
         <Typography variant="h6">Welcome, {user.name}!</Typography>
         <Button
         variant="outlined"
@@ -25,6 +27,5 @@ export default function NavBar ({ user, onLogout }) {
             Logout
         </Button>
     </Toolbar>
-</AppBar>
-</Box>);
+</AppBar>);
 }
