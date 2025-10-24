@@ -30,7 +30,7 @@ export default class User {
     return res.rows[0] || null;
   }
 
-    static async update(id, { name, email, role, major }) {
+  static async update(id, { name, email, role, major }) {
     console.log("update in USER CALLED")
     try {
         const res = await pool.query(
@@ -44,6 +44,21 @@ export default class User {
 
     } catch (error) {
       console.error("Error updating user:", error.message);
+      throw error;
+    }
+  }
+
+  async add() {
+    console.log("add NEW USER CALLED")
+    try {
+      const res = await pool.query(
+        "INSERT INTO users (name, email, password, role, major) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+        [this.name, this.email, this.password, this.role, this.major || null]
+      );
+      // res.status(201).json(res.rows[0]);
+      return res.rows[0];
+    } catch (err) {
+      console.error("Error adding user:", error.message);
       throw error;
     }
   }

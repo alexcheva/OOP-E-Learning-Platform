@@ -42,6 +42,7 @@ export default class UserController {
       res.status(500).json({ error: "Server error" });
     }
   }
+
   static async updateById(req, res) {
     console.log("calling updateById user");
     console.log("Incoming update data:", req.body, "params:", req.params);
@@ -71,6 +72,37 @@ export default class UserController {
       });
     } catch (err) {
       console.error("Error in updateById:", err.message);
+      res.status(500).json({ error: "Server error" });
+    }
+  }
+
+  static async create(req, res) {
+    console.log("calling create user");
+    console.log("Incoming update data:", req.body);
+
+    try {
+      const { name, email, password, role, major } = req.body;
+
+      if (!name || !email || !password || !role) {
+        return res.status(400).json({ error: "Missing required fields" });
+      }
+
+      const newUser = new User({
+        name: name,
+        email: email,
+        password: password,
+        role: role,
+        major: major,
+      });
+
+      console.log("newUser", newUser);
+
+      const saved = await newUser.add();
+      console.log("saved",saved);
+      res.status(201).json(saved);
+
+    } catch (err) {
+      console.error("Error in addUser:", err.message);
       res.status(500).json({ error: "Server error" });
     }
   }
