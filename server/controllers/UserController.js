@@ -12,6 +12,17 @@ export default class UserController {
     }
   }
 
+  static async listStudents(req, res) {
+    console.log("UserController.js list is called");
+    try {
+      const users = await User.findAllStudents();
+      res.json(users);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Server error' });
+    }
+  }
+
   static async getById(req, res) {
     try {
       const user = await User.findById(req.params.id);

@@ -16,6 +16,12 @@ export default class User {
     return res.rows.map(r => new User(r));
   }
 
+  static async findAllStudents() {
+    console.log("Users.js findAllStudents is called");
+    const res = await pool.query('SELECT * FROM users WHERE role = $1', ['student']);
+    return res.rows.map(r => new User(r));
+  }
+
   static async findById(id) {
     const res = await pool.query('SELECT * FROM users WHERE id = $1', [id]);
     if (!res.rows.length) return null;

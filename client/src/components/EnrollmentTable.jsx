@@ -12,10 +12,10 @@ import {
 import AddEnrollmentModal from "./modals/AddEnrollmentModal";
 import DeleteButton from "./buttons/DeleteButton";
 
-export default function EnrollmentTable({ course, courses, students, fetchEnrollments }) {
+export default function EnrollmentTable({ course, courses, students, fetchEnrollments, users }) {
   const [openModal, setOpenModal] = useState(false);
 
-  // console.log("students",students);
+  console.log("users",users);
   return (
     <Box p={3}>
       <Typography variant="h5" mb={2}>
@@ -58,7 +58,8 @@ export default function EnrollmentTable({ course, courses, students, fetchEnroll
         isOpen={openModal}
         onClose={() => setOpenModal(false)}
         // onSave={fetchData}
-        students={students}
+        students={users}
+        // users={users}
         courses={courses}
       />
     </Box>

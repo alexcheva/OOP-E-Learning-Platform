@@ -20,6 +20,7 @@ import EnrollmentTable from "./EnrollmentTable";
 
 export default function AllCourses() {
   const [courses, setCourses] = useState([]);
+  const [users, setUsers] = useState([]);
   const [enrollments, setEnrollments] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState(null);
   console.log("courses", courses)
@@ -32,6 +33,7 @@ export default function AllCourses() {
 
     useEffect(() => {
     fetchCourses();
+    fetchUsers();
     fetchEnrollments();
   }, []);
 
@@ -42,6 +44,13 @@ export default function AllCourses() {
     const res = await fetch(endpoint);
     const data = await res.json();
     setCourses(data);
+  };
+
+  const fetchUsers = async () => {
+    const res = await fetch("http://localhost:9000/api/users/students");
+    const data = await res.json();
+    console.log("fetchUsers", res, data)
+    setUsers(data);
   };
 
   async function fetchEnrollments() {
@@ -123,6 +132,7 @@ export default function AllCourses() {
         courses={courses}
         fetchEnrollments={() => fetchEnrollments()}
         students={enrollments[selectedCourse.id]?.students}
+        users={users}
       />
       )}
 
