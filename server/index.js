@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import authRoutes from "./routes/authRoutes.js";
 import courseRoutes from './routes/courseRoutes.js';
+import enrollmentRoutes from "./routes/enrollmentRoutes.js";
 import userRoutes from './routes/userRoutes.js';
 
 dotenv.config();
@@ -13,7 +14,8 @@ app.use(express.json());
 app.use("/api", authRoutes);
 app.use('/api/courses', courseRoutes);
 app.use("/api/users", userRoutes);
-
+app.use("/api/enrollments", enrollmentRoutes);
+// app.get('/api/admin/courses', checkRole('teacher'), CourseController.list);
 app.get('/', (req, res) => {
   res.json({ message: 'Server running on Node 24!' });
 });

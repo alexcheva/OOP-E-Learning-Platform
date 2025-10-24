@@ -122,7 +122,7 @@ export default function AllCourses() {
         course={selectedCourse}
         courses={courses}
         fetchEnrollments={() => fetchEnrollments()}
-        students={enrollments[selectedCourse.id].students}
+        students={enrollments[selectedCourse.id]?.students}
       />
       )}
 

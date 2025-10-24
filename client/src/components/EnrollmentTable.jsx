@@ -15,7 +15,7 @@ import DeleteButton from "./buttons/DeleteButton";
 export default function EnrollmentTable({ course, courses, students, fetchEnrollments }) {
   const [openModal, setOpenModal] = useState(false);
 
-  console.log("students",students);
+  // console.log("students",students);
   return (
     <Box p={3}>
       <Typography variant="h5" mb={2}>
@@ -35,7 +35,8 @@ export default function EnrollmentTable({ course, courses, students, fetchEnroll
           </TableRow>
         </TableHead>
         <TableBody>
-          {students.map((e) => (
+
+          {students?.map((e) => (
             <TableRow key={e._student_id}>
               <TableCell>{e.student_name}</TableCell>
               <TableCell>{e.grade}</TableCell>
