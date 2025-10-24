@@ -1,18 +1,46 @@
 import { pool } from '../db.js';
 
 export default class Course {
-  constructor({ id = null, name, credits, enrollment_limit, created_at = null }) {
+  constructor({ id = null, name, credits, enrollment_limit, total_enrolled, created_at = null }) {
     this.id = id;
     this.name = name;
     this.credits = credits;
     this.enrollment_limit = enrollment_limit;
     this.created_at = created_at;
+    this.total_enrolled = total_enrolled;
   }
 
   static async findAll() {
     const res = await pool.query('SELECT * FROM courses ORDER BY id');
     return res.rows.map(r => new Course(r));
   }
+// TODO map object by course id
+// add enrollment information
+  static async findEnrolled() {
+    const res = await pool.query(
+      `
+      SELECT 
+        c.id,
+        c.name,
+        c.credits,
+        COUNT(e.id) AS total_enrolled,
+        c.enrollment_limit
+      FROM courses c
+      LEFT JOIN enrollments e ON c.id = e.course_id
+      GROUP BY c.id, c.name, c.credits, c.enrollment_limit
+      ORDER BY c.id
+      `)
+    return res.rows.map(r => new Course(r));
+  }
+
+  static async findEnrollment() {
+    const res = await pool.query(
+      `SELECT * FROM courses LEFT JOIN enrollments ON courses.id = enrollments.course_id LEFT JOIN users u ON enrollments.student_id = u.id'
+    `);
+    return res.rows.map(r => new Course(r));
+  }
+
+  
 
   static async findById(id) {
     const res = await pool.query('SELECT * FROM courses WHERE id = $1', [id]);
@@ -40,7 +68,7 @@ export default class Course {
         WHERE id = $4 RETURNING *`,
         [name, credits, enrollment_limit, id]
       );
-      
+
       // If no course was updated, return null
       return res.rows[0] || null;
 

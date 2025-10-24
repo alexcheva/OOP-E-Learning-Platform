@@ -35,7 +35,7 @@ export default class CourseController {
 
   static async list(req, res) {
     try {
-      const courses = await Course.findAll();
+      const courses = await Course.findEnrolled();
       res.json(courses);
     } catch (err) {
       console.error(err);
