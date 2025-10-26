@@ -15,20 +15,20 @@ export default function DeleteButton({
   // fields,       // array of { name, label, type }
   endpoint,     // `/api/courses`, `/api/users`, `/api/enrollments`
   // onSave        // callback after successful update
-  // fetch, // refresh function
+  fetchData, // refresh function
 }) {
-  console.log("Delete", entityName, "called");
   const handleDelete = async (id) => {
+    console.log("Delete", entityName, "called");
     console.log("handleDelete", entityName, id, `${endpoint}/${id}`,)
     const res = await fetch(`${endpoint}/${id}`, { method: "DELETE" });
     const data = await res.json();
     console.log("handleDelete returning data", data);
     // setIsDeleteOpen(false);
-    // fetch();
+    fetchData();
   };
 
   return (
-    <IconButton color="error" onClick={() => handleDelete(id)}>
+    <IconButton color="error" onClick={() => {handleDelete(id)}}>
       <Delete />
     </IconButton>
   );

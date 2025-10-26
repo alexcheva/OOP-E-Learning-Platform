@@ -12,10 +12,10 @@ import {
 import AddEnrollmentModal from "./modals/AddEnrollmentModal";
 import DeleteButton from "./buttons/DeleteButton";
 
-export default function EnrollmentTable({ course, courses, students, fetchEnrollments, users }) {
+export default function EnrollmentTable({ course, courses, students, fetchEnrollments, fetchData, users }) {
   const [openModal, setOpenModal] = useState(false);
 
-  console.log("users",users);
+  console.log("students",students);
   return (
     <Box p={3}>
       <Typography variant="h5" mb={2}>
@@ -30,21 +30,25 @@ export default function EnrollmentTable({ course, courses, students, fetchEnroll
         <TableHead>
           <TableRow>
             <TableCell>Student</TableCell>
+            <TableCell>Course</TableCell>
             <TableCell>Grade</TableCell>
+            <TableCell>Edit</TableCell>
             <TableCell>Drop</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
 
           {students?.map((e) => (
-            <TableRow key={e._student_id}>
+            <TableRow key={e.id}>
               <TableCell>{e.student_name}</TableCell>
+              <TableCell>{e.course_name}</TableCell>
               <TableCell>{e.grade}</TableCell>
+              <TableCell>Grade</TableCell>
               <TableCell>
                 <DeleteButton 
                   entityName="enrollment"
-                  id={e.student_id}
-                  // onSave={fetchData}
+                  id={e.id}
+                  fetchData={() => fetchData()}
                   endpoint="http://localhost:9000/api/enrollments"
                   fetch={fetchEnrollments}
                 />
@@ -57,7 +61,7 @@ export default function EnrollmentTable({ course, courses, students, fetchEnroll
       <AddEnrollmentModal
         isOpen={openModal}
         onClose={() => setOpenModal(false)}
-        // onSave={fetchData}
+        onSave={fetchData}
         students={users}
         // users={users}
         courses={courses}

@@ -23,6 +23,7 @@ export default function AddEnrollmentModal({
     course_id: "",
   });
   const [loading, setLoading] = useState(false);
+  const endpoint = "http://localhost:9000/api/enrollments";
 
   useEffect(() => {
     if (!isOpen) {
@@ -38,20 +39,20 @@ export default function AddEnrollmentModal({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO add enrollment
-    setLoading(true);
-
+    console.log(JSON.stringify(formData), endpoint);
     try {
-      const res = await fetch("/api/enrollments", {
+      const res = await fetch(`${endpoint}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
 
       const result = await res.json();
-      if (!res.ok) throw new Error(result.error || "Failed to enroll student");
+      console.log("handleSubmit result", result, res);
 
-      onSave(result); // refresh list or show success
+      if (!res.ok) throw new Error(result.error || "Failed to add enrollment");
+
+      onSave(result); // refresh enrollment list
       onClose();
     } catch (err) {
       console.error("Error adding enrollment:", err);

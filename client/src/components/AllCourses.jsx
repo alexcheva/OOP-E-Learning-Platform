@@ -31,11 +31,15 @@ export default function AllCourses() {
     { name: "enrollment_limit", label: "Enrollment Limit", type: "number" },
   ];
 
-    useEffect(() => {
+  useEffect(() => {
+    fetchData()
+  }, []);
+
+  const fetchData = async () => {
     fetchCourses();
     fetchUsers();
     fetchEnrollments();
-  }, []);
+  }
 
   const endpoint = "http://localhost:9000/api/courses"
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
@@ -131,7 +135,8 @@ export default function AllCourses() {
         course={selectedCourse}
         courses={courses}
         fetchEnrollments={() => fetchEnrollments()}
-        students={enrollments[selectedCourse.id]?.students}
+        fetchData={() => fetchData()}
+        students={enrollments}
         users={users}
       />
       )}

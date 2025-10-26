@@ -4,7 +4,8 @@ export default class EnrollmentController {
   static async getAll(req, res) {
     console.log("EnrollementController GetAll called")
     try {
-      const enrollments = await Enrollment.getCourseAndEnrollment();
+      const enrollments = await Enrollment.getAll();
+      // const enrollments = await Enrollment.getCourseAndEnrollment();
       res.json(enrollments);
     } catch (err) {
       res.status(500).json({ error: "Server error" });
@@ -22,14 +23,28 @@ export default class EnrollmentController {
   }
 
   static async create(req, res) {
-    const { student_id, course_id } = req.body;
-    if (!student_id || !course_id)
-      return res.status(400).json({ error: "Missing student or course" });
-
+    console.log("calling create enrollment");
     try {
-      const enrollment = await Enrollment.create({ student_id, course_id });
+      const { student_id, course_id } = req.body;
+      console.log("enrollment create called", req.body);
+
+      if (!student_id || !course_id) {
+        return res.status(400).json({ error: "Missing student or course" });
+      }
+
+      const newEnrollment = new Enrollment({
+        student_id: student_id,
+        course_id: course_id,
+      });
+
+      console.log("newEnrollment", newEnrollment);
+
+      const enrollment = await newEnrollment.add();
+      console.log("enrollment",enrollment)
       res.status(201).json(enrollment);
+
     } catch (err) {
+      console.error("Error in addEnrollment:", err.message);
       res.status(500).json({ error: "Server error" });
     }
   }

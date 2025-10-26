@@ -1,11 +1,11 @@
 import {pool} from "../db.js";
 
 export default class Enrollment {
-  constructor({ id = null, student_id, course_id, enrolled_at = null }) {
+  constructor({ id = null, student_id, course_id, grade = null }) {
     this.id = id;
     this.student_id = student_id;
     this.course_id = course_id;
-    this.enrolled_at = enrolled_at;
+    this.grade = grade;
   }
 
   static async getAll() {
@@ -20,39 +20,42 @@ export default class Enrollment {
     return rows;
   }
   
-  static async getCourseAndEnrollment() {
-    console.log("enrollement getCourseAndEnrollment called")
-    const { rows } = await pool.query(`
-     SELECT * FROM courses LEFT JOIN enrollments ON courses.id = enrollments.course_id
-    JOIN users u ON enrollments.student_id = u.id
-    `);
+  // static async getCourseAndEnrollment() {
+  //   console.log("enrollement getCourseAndEnrollment called")
+  //   const { rows } = await pool.query(`
+  //    SELECT * FROM courses LEFT JOIN enrollments ON courses.id = enrollments.course_id
+  //   JOIN users u ON enrollments.student_id = u.id
+  //   `);
+  //   console.log("rows",rows);
 
-    const enrollmentData = {
-    };
+  //   const enrollmentData = {
+  //   };
 
-    for (const value of rows) {
-      if (!(value.course_id in enrollmentData)) {
-        enrollmentData[value.course_id] = {
-          id: value.course_id,
-          students: [
-            {
-              student_name: value.name,
-              student_id: value.student_id,
-              grade: value.grade,
-            }
-          ]
-        }
-      } else {
-        enrollmentData[value.course_id].students.push({
-              student_name: value.name,
-              student_id: value.student_id,
-              grade: value.grade,
-            })
-      }
-    }
-    console.log("enrollmentData", enrollmentData);
-    return enrollmentData;
-  }
+  //   for (const value of rows) {
+  //     if (!(value.course_id in enrollmentData)) {
+  //       enrollmentData[value.course_id] = {
+  //         id: value.course_id,
+  //         students: [
+  //           {
+  //             student_name: value.name,
+  //             student_id: value.student_id,
+  //             enrolement_id: value.id,
+  //             grade: value.grade,
+  //           }
+  //         ]
+  //       }
+  //     } else {
+  //       enrollmentData[value.course_id].students.push({
+  //             student_name: value.name,
+  //             student_id: value.student_id,
+  //             enrolement_id: value.id,
+  //             grade: value.grade,
+  //           })
+  //     }
+  //   }
+  //   console.log("enrollmentData", enrollmentData);
+  //   return enrollmentData;
+  // }
 
   static async findById(id) {
     const res = await pool.query('SELECT * FROM courses WHERE id = $1', [id]);
@@ -60,13 +63,21 @@ export default class Enrollment {
     return new Course(res.rows[0]);
   }
 
-  static async create({ student_id, course_id }) {
-    const { rows } = await pool.query(
-      `INSERT INTO enrollments (student_id, course_id, enrolled_at)
-       VALUES ($1, $2, NOW()) RETURNING *`,
-      [student_id, course_id]
-    );
-    return rows[0];
+  async add() {
+    try {
+      console.log("calling add enrollment");
+      // console.log("Incoming update data:", req.body);
+      const res = await pool.query(
+      `INSERT INTO enrollments (student_id, course_id, grade)
+       VALUES ($1, $2, $3) RETURNING *`,
+      [this.student_id, this.course_id, this.grade || null]
+      );
+      console.log("returning", res);
+      return res;
+    } catch (err) {
+      console.error("Error adding enrollment:", err.message);
+      throw err;
+    }
   }
 
   static async delete(id) {
