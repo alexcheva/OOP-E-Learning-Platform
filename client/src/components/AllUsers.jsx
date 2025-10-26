@@ -18,7 +18,7 @@ import EditModal from "./modals/EditModal";
 import AddUserModal from "./modals/AddUserModal";
 
 export default function AllUsers() {
-  const endpoint = "http://localhost:9000/api/users"
+  const endpoint = `${process.env.REACT_APP_API_URL}/api/users`
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [openUserModal, setOpenUserModal] = useState(false);

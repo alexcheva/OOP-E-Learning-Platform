@@ -29,8 +29,8 @@ function AuthTabs({ onLoginSuccess }) {
     e.preventDefault();
     const endpoint =
       activeTab === "register"
-        ? "http://localhost:9000/api/register"
-        : "http://localhost:9000/api/login";
+        ? `${process.env.REACT_APP_API_URL}/api/register`
+        : `${process.env.REACT_APP_API_URL}/api/login`;
     
     try {
       const res = await fetch(endpoint, {

@@ -23,7 +23,7 @@ export default function AddEnrollmentModal({
     course_id: "",
   });
   const [loading, setLoading] = useState(false);
-  const endpoint = "http://localhost:9000/api/enrollments";
+  const endpoint = `${process.env.REACT_APP_API_URL}/api/enrollments`;
 
   useEffect(() => {
     if (!isOpen) {

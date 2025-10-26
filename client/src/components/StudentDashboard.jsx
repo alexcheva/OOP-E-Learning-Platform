@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 export default function StudentDashboard({ user }) {
-  const endpoint = "http://localhost:9000/api";
+  const endpoint = `${process.env.REACT_APP_API_URL}/api`;
   const [courses, setCourses] = useState([]);
   const [enrolled, setEnrolled] = useState([]);
 

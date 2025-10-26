@@ -43,7 +43,7 @@ export default function AllCourses() {
     fetchEnrollments();
   }
 
-  const endpoint = "http://localhost:9000/api/courses"
+  const endpoint = `${process.env.REACT_APP_API_URL}/api/courses`
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
   const fetchCourses = async () => {
@@ -53,14 +53,14 @@ export default function AllCourses() {
   };
 
   const fetchUsers = async () => {
-    const res = await fetch("http://localhost:9000/api/users/students");
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/api/users/students`);
     const data = await res.json();
     console.log("fetchUsers", res, data)
     setUsers(data);
   };
 
   async function fetchEnrollments() {
-    const res = await axios.get('http://localhost:9000/api/enrollments');
+    const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/enrollments`);
     console.log("TeacherDashboard fetchEnrollments res:", res)
     setEnrollments(res.data);
   }

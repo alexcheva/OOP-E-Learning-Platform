@@ -16,7 +16,7 @@ import EditButton from "./buttons/EditButton_new";
 export default function EnrollmentTable({ enrollment, courses, enrollments, fetchEnrollments, fetchData, users }) {
   const [openModal, setOpenModal] = useState(false);
   const [selectedEnrollment, setSelectedEnrollement] = useState(false);
-  const endpoint = "http://localhost:9000/api/enrollments";
+  const endpoint = `${process.env.REACT_APP_API_URL}/api/enrollments`;
   const enrollmentFields = [
     { name: "alex", label: "Student Name" },
     { name: "intro", label: "Course", },
@@ -24,6 +24,7 @@ export default function EnrollmentTable({ enrollment, courses, enrollments, fetc
   ];  
   
   const handleEditClick = (enrollment) => {
+    console.log("edit button clicked", enrollment)
     setSelectedEnrollement(enrollment); // pass clicked enrollment to modal
   };
 
@@ -78,7 +79,7 @@ export default function EnrollmentTable({ enrollment, courses, enrollments, fetc
                   entityName="enrollment"
                   id={e.id}
                   fetchData={() => fetchData()}
-                  endpoint="http://localhost:9000/api/enrollments"
+                  endpoint={`${process.env.REACT_APP_API_URL}/api/enrollments`}
                   fetch={fetchEnrollments}
                 />
               </TableCell>
