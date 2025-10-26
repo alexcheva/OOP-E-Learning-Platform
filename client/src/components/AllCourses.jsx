@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import {
+  Button,
   Table,
   TableBody,
   TableCell,
@@ -23,6 +24,7 @@ export default function AllCourses() {
   const [users, setUsers] = useState([]);
   const [enrollments, setEnrollments] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState(null);
+  const [selectedEnrollment, setSelectedEnrollment] = useState(null);
   console.log("courses", courses)
   // const [courseFields, setCourseFields] = useState([]);
   const courseFields = [
@@ -98,11 +100,26 @@ export default function AllCourses() {
           </TableHead>
           <TableBody>
             {courses.map((course) => (
-              <TableRow key={course.id} onClick={() => {
-                console.log("row clicked", course.id, setSelectedCourse(course))
-              }}>
+              <TableRow key={course.id}>
                 <TableCell>{course.id}</TableCell>
-                <TableCell>{course.name}</TableCell>
+                <TableCell>
+                  <Button
+                    variant="outlined"
+                    color="inherit"
+                    onClick={() => {
+                      console.log("selectedEnrollment clicked");
+                      setSelectedEnrollment(course)
+                    }}
+                    sx={{
+                        // borderColor: "white",
+                        "&:hover": {
+                        backgroundColor: "rgba(255,255,255,0.2)",
+                        },
+                    }}
+                    >
+                    {course.name}
+                  </Button>
+                </TableCell>
                 <TableCell>{course.credits}</TableCell>
                 <TableCell>{course.total_enrolled}</TableCell>
                 <TableCell>{course.enrollment_limit}</TableCell>
@@ -130,25 +147,25 @@ export default function AllCourses() {
         </Box>
       )}
     
-    {selectedCourse && (
-      <EnrollmentTable 
-        course={selectedCourse}
-        courses={courses}
-        fetchEnrollments={() => fetchEnrollments()}
-        fetchData={() => fetchData()}
-        students={enrollments}
-        users={users}
+      {/* {selectedEnrollment && ( */}
+        <EnrollmentTable 
+          enrollment={selectedEnrollment}
+          courses={courses}
+          fetchEnrollments={() => fetchEnrollments()}
+          fetchData={() => fetchData()}
+          enrollments={enrollments}
+          users={users}
+        />
+        {/* )} */}
+
+      <DeleteCourseModal
+        open={isDeleteOpen}
+        course={courses[selectedCourse-1]}
+        onClose={() => setIsDeleteOpen(false)}
+        onConfirm={handleDeleteConfirm}
       />
-      )}
 
-    <DeleteCourseModal
-      open={isDeleteOpen}
-      course={courses[selectedCourse-1]}
-      onClose={() => setIsDeleteOpen(false)}
-      onConfirm={handleDeleteConfirm}
-    />
-
-    {/* {selectedCourse && (
+      {selectedCourse && (
         <EditModal
           isOpen={!!selectedCourse}
           onClose={() => setSelectedCourse(null)}
@@ -158,7 +175,7 @@ export default function AllCourses() {
           endpoint={endpoint}
           onSave={()=>fetchCourses()}
         />
-      )} */}
+      )}
     </Container>
   );
 }

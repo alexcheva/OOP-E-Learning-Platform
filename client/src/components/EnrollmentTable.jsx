@@ -11,15 +11,31 @@ import {
 } from "@mui/material";
 import AddEnrollmentModal from "./modals/AddEnrollmentModal";
 import DeleteButton from "./buttons/DeleteButton";
+import EditButton from "./buttons/EditButton_new";
 
-export default function EnrollmentTable({ course, courses, students, fetchEnrollments, fetchData, users }) {
+export default function EnrollmentTable({ enrollment, courses, enrollments, fetchEnrollments, fetchData, users }) {
   const [openModal, setOpenModal] = useState(false);
+  const [selectedEnrollment, setSelectedEnrollement] = useState(false);
+  const endpoint = "http://localhost:9000/api/enrollments";
+  const enrollmentFields = [
+    { name: "alex", label: "Student Name" },
+    { name: "intro", label: "Course", },
+    { name: "A", label: "Grade", },
+  ];  
+  
+  const handleEditClick = (enrollment) => {
+    setSelectedEnrollement(enrollment); // pass clicked enrollment to modal
+  };
 
-  console.log("students",students);
+  const handleCloseModal = () => {
+    setSelectedEnrollement(null);
+  };
+
+  console.log("enrollments",enrollments);
   return (
     <Box p={3}>
       <Typography variant="h5" mb={2}>
-        Manage Enrollments for "{course.name}"
+        Manage Enrollments
       </Typography>
 
       <Button variant="contained" color="primary" onClick={() => setOpenModal(true)}>
@@ -38,12 +54,25 @@ export default function EnrollmentTable({ course, courses, students, fetchEnroll
         </TableHead>
         <TableBody>
 
-          {students?.map((e) => (
+          {enrollments?.map((e) => (
             <TableRow key={e.id}>
               <TableCell>{e.student_name}</TableCell>
               <TableCell>{e.course_name}</TableCell>
               <TableCell>{e.grade}</TableCell>
-              <TableCell>Grade</TableCell>
+              <TableCell>Grade
+                <EditButton item={e} onEdit={handleEditClick} />
+                {/* <EditButton
+                  isOpen={openModal}
+                  onClose={() => setOpenModal(false)}
+                  entityName={"enrollment"}   // e.g. "course", "user", "enrollment"
+                  id={e.id}
+                  data={e}         // current record to edit
+                  fields={enrollmentFields}       // array of { name, label, type }
+                  endpoint={endpoint}     // `/api/courses`, `/api/users`, `/api/enrollments`
+                  onSave={fetchData}        // callback after successful update
+                  fetchData={fetchData} 
+                  /> */}
+              </TableCell>
               <TableCell>
                 <DeleteButton 
                   entityName="enrollment"

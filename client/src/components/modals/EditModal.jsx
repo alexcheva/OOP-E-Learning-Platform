@@ -21,7 +21,7 @@ export default function EditModal({
 }) {
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(false);
-  console.log("EditModal", data, fields, endpoint)
+  console.log("EditModal", isOpen, data, fields, endpoint)
 
   useEffect(() => {
     if (data) setFormData(data);
