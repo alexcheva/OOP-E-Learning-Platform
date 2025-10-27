@@ -124,9 +124,9 @@ Uses concurrently to run backend and frontend at the same time.
 
 
 
-✅ Your server should be running at http://localhost:9000
+Your server should be running at http://localhost:9000
 
-✅ React app runs at http://localhost:3000
+React app runs at http://localhost:3000
 
 
 ## 3. Set Up Database
@@ -209,25 +209,30 @@ a concise summary of the necessary dependencies included in the project:
 | **pg**      | PostgreSQL client                  | Interact with your database |
 
 
-## Sample Data:
-
-``` sql
-
- ```
 
 ## Routes 
 and any authentication/authorization included
  | Method   | Endpoint         | Description       |
 | -------- | ---------------- | ----------------- |
-| `POST`   | `/login`         | User log in       |
-| `POST`   | `/register`      | Create a new user |
-| `GET`    | `/api/users`     | Get all users     |
-| `PUT`    | `/api/users/:id` | Update user       |
-| `DELETE` | `/api/users/:id` | Delete user       |
+| `POST`   | `/login`               | User log in             |
+| `POST`   | `/register`            | Create a new user       |
+| `GET`    | `/api/users`           | Get all users           |
+| `PUT`    | `/api/users/:id`       | Update user             |
+| `DELETE` | `/api/users/:id`       | Delete user             |
+| `POST`   | `/api/enrollments`     | Create a new enrollment |
+| `GET`    | `/api/enrollments`     | Get all enrollments     |
+| `PUT`    | `/api/enrollments/:id` | Update enrollment       |
+| `DELETE` | `/api/enrollments/:id` | Delete enrollment       |
 
 
 
 ## Tests:
-- concise summary of at least two included tests.
+- EditButton Component Test: 
+  - Ensures the Edit icon renders correctly.
+  - Verifies the onEdit callback is called with the correct item when clicked.
+  - (Uses React Testing Library + Jest.)
+
+- EditModal Component Test (planned / partial)
+  - Intended to check that form fields populate with existing data, update values correctly, and trigger onSave when submitted.
 
 
