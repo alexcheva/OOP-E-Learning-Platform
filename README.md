@@ -5,6 +5,11 @@ Develop a comprehensive e-learning management system that enables instructors to
 Create a web application where instructors can manage courses and content, while students can access learning materials, submit assignments, and track their academic progress.
 
 [Link to a live project.](https://oop-e-learning-platform.onrender.com/)
+##  Testing login:
+ | Role   | email         | password       |
+| -------- | ---------------- | ----------------- |
+| Teacher   | teacher@test.com  | test  
+| Student   | student@test.com  | test  
 
 ![Registration](./wireframes/register.png)<br />
 ![Log in](./wireframes/sign-in.png)<br />
