@@ -22,14 +22,14 @@ export default function TeacherDashboard({ user }) {
   }, []);
 
   async function fetchUsers() {
-    const res = await axios.get('http://localhost:9000/api/users');
+    const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/users`);
     console.log("TeacherDashboard fetchUsers res:", res)
     setUsers(res.data);
   }
   // console.log(users);
 
     async function fetchEnrollments() {
-    const res = await axios.get('http://localhost:9000/api/enrollments');
+    const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/enrollments`);
     console.log("TeacherDashboard fetchEnrollments res:", res)
     setEnrollments(res.data);
   }

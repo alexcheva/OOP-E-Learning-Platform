@@ -13,6 +13,7 @@ export default class EnrollmentController {
   }
 
   static async getById(req, res) {
+    console.log("Enrollment FindById", req, req.params, req.params.id)
     try {
       const enrollement = await Enrollment.findById(req.params.id);
       if (!enrollement) return res.status(404).json({ error: 'Course not found' });

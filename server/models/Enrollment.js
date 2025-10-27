@@ -58,9 +58,14 @@ export default class Enrollment {
   // }
 
   static async findById(id) {
-    const res = await pool.query('SELECT * FROM courses WHERE id = $1', [id]);
+    const res = await pool.query(`
+      SELECT *, c.name AS course_name, c.credits AS course_credits
+      FROM enrollments e
+      JOIN courses c ON e.course_id = c.id
+      WHERE student_id = $1`
+      , [id]);
     if (!res.rows.length) return null;
-    return new Course(res.rows[0]);
+    return res.rows;
   }
 
   async add() {
