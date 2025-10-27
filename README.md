@@ -4,7 +4,7 @@ Develop a comprehensive e-learning management system that enables instructors to
 ## Objective:
 Create a web application where instructors can manage courses and content, while students can access learning materials, submit assignments, and track their academic progress.
 
-[Link to a live project.](https://github.com/alexcheva/)
+[Link to a live project.](https://oop-e-learning-platform.onrender.com/)
 
 ![Registration](./wireframes/register.png)<br />
 ![Log in](./wireframes/sign-in.png)<br />
