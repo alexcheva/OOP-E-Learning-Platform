@@ -1,21 +1,15 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
-import { Link } from "react-router-dom";
-import { Box, Button } from "@mui/material";
+import { globals } from "../utils/globals";
+// import { Link } from "react-router-dom";
+// import { Box, Button } from "@mui/material";
+import { dropUser, enrollUser } from "../utils/api";
 
 export default function StudentDashboard({ user }) {
-  console.log("user in Stuent dashboard", user)
-  const endpoint = `${process.env.REACT_APP_API_URL}`;
   const [courses, setCourses] = useState([]);
   const [enrolled, setEnrolled] = useState([]);
-
-  // const handleDeleteUser = async (id) => {
-  //   console.log("delete user id", id)
-  //   if (!window.confirm("Are you sure you want to delete this user?")) return;
-  //   const res = await fetch(`${endpoint}/${id}`, { method: "DELETE" });
-  //   console.log(res);
-  //   fetchUsers();
-  // };
+  // TODO
+  // delete user
+  // edit user
 
   useEffect(() => {
     fetchCourses();
@@ -23,29 +17,42 @@ export default function StudentDashboard({ user }) {
   }, []);
 
   async function fetchCourses() {
-    const res = await axios.get(`${endpoint}/api/courses`);
-    setCourses(res.data);
+  try {
+      const courses = await globals.fetchCourses();
+      console.log("courses", courses)
+      setCourses(courses);
+    } catch (err) {
+      console.error("Error loading courses:", err);
+    }
   }
   
   async function fetchEnrollments() {
-    console.log("fetching enrollments", `${endpoint}/api/enrollments/${user.id}`);
-    const res = await axios.get(`${endpoint}/api/enrollments/${user.id}`);
-    console.log("fetchEnrollments res.data", res.data);
-    setEnrolled(res.data);
+  try {
+      const enrollments = await globals.fetchEnrollments(user.id);
+      console.log("enrollments", enrollments);
+      setEnrolled(enrollments);
+    } catch (err) {
+      console.error("Error loading courses:", err);
+    }
   }
-  // TODO fix enroll student
-  async function handleEnroll(courseId) {
-    await axios.post(`${endpoint}/enrollments`, {
-      student_id: user.id,
-      course_id: courseId,
-    });
+
+  async function handleEnroll(userId, courseId) {
+    try {
+      await enrollUser(userId, courseId);
+      alert("Enrolled successfully!");
+    } catch (err) {
+      alert("Error" + err.message);
+    }
     fetchEnrollments();
   }
 
-  async function handleDrop(courseId) {
-    console.log("handleDrop called", courseId)
-    if (!window.confirm("Are you sure you want to drop this course?")) return;
-    const res = await fetch(`${endpoint}/api/enrollments/${courseId}`, { method: "DELETE" });
+  async function handleDrop(enrollment_id) {
+    try {
+      await dropUser(enrollment_id);
+      alert("Dropped successfully!");
+    } catch (err) {
+      alert("Error" + err.message);
+    }
     fetchEnrollments();
   }
 
@@ -79,7 +86,9 @@ export default function StudentDashboard({ user }) {
                 {c.name} ({c.credits} credits)
               </span>
               <button
-                onClick={() => handleEnroll(c.id)}
+                onClick={() => {
+                  handleEnroll(user.id, c.id);
+                }}
                 className="bg-blue-500 text-white px-3 py-1 rounded"
               >
                 Enroll
@@ -95,10 +104,12 @@ export default function StudentDashboard({ user }) {
           {enrolled.map((e) => (
             <li key={e.id}>
               <span>
-              {e.course_name} — Grade: {e.grade || 'N/A'}
+              {e.id} - {e.course_name} — Grade: {e.grade || 'N/A'}
               </span>
               <button
-                onClick={() => handleDrop(e.id)}
+                onClick={() => {
+                  handleDrop(e.enrollment_id);
+                }}
                 className="bg-blue-500 text-white px-3 py-1 rounded"
               >
                 Drop

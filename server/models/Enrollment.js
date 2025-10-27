@@ -20,46 +20,10 @@ export default class Enrollment {
     return rows;
   }
   
-  // static async getCourseAndEnrollment() {
-  //   console.log("enrollement getCourseAndEnrollment called")
-  //   const { rows } = await pool.query(`
-  //    SELECT * FROM courses LEFT JOIN enrollments ON courses.id = enrollments.course_id
-  //   JOIN users u ON enrollments.student_id = u.id
-  //   `);
-  //   console.log("rows",rows);
-
-  //   const enrollmentData = {
-  //   };
-
-  //   for (const value of rows) {
-  //     if (!(value.course_id in enrollmentData)) {
-  //       enrollmentData[value.course_id] = {
-  //         id: value.course_id,
-  //         students: [
-  //           {
-  //             student_name: value.name,
-  //             student_id: value.student_id,
-  //             enrolement_id: value.id,
-  //             grade: value.grade,
-  //           }
-  //         ]
-  //       }
-  //     } else {
-  //       enrollmentData[value.course_id].students.push({
-  //             student_name: value.name,
-  //             student_id: value.student_id,
-  //             enrolement_id: value.id,
-  //             grade: value.grade,
-  //           })
-  //     }
-  //   }
-  //   console.log("enrollmentData", enrollmentData);
-  //   return enrollmentData;
-  // }
 
   static async findById(id) {
     const res = await pool.query(`
-      SELECT *, c.name AS course_name, c.credits AS course_credits
+      SELECT *, e.id AS enrollment_id, c.name AS course_name, c.credits AS course_credits
       FROM enrollments e
       JOIN courses c ON e.course_id = c.id
       WHERE student_id = $1`
