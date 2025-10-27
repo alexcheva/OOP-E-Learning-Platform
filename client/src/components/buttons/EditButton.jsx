@@ -42,7 +42,7 @@ export default function EditButton({
 
   return (
       <>
-    <IconButton color="error" onClick={() => {handleEdit(id)}}>
+    <IconButton color="primary" onClick={() => {handleEdit(id)}}>
       <Edit />
     </IconButton>
         {setSelected && (

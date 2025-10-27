@@ -103,22 +103,7 @@ export default function AllCourses() {
               <TableRow key={course.id}>
                 <TableCell>{course.id}</TableCell>
                 <TableCell>
-                  <Button
-                    variant="outlined"
-                    color="inherit"
-                    onClick={() => {
-                      console.log("selectedEnrollment clicked");
-                      setSelectedEnrollment(course)
-                    }}
-                    sx={{
-                        // borderColor: "white",
-                        "&:hover": {
-                        backgroundColor: "rgba(255,255,255,0.2)",
-                        },
-                    }}
-                    >
-                    {course.name}
-                  </Button>
+                  {course.name}
                 </TableCell>
                 <TableCell>{course.credits}</TableCell>
                 <TableCell>{course.total_enrolled}</TableCell>

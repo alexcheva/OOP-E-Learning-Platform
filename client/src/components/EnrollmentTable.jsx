@@ -2,16 +2,19 @@ import { useState } from "react";
 import {
   Button,
   Typography,
-  Box,
+  Container,
   Table,
+  TableContainer,
   TableHead,
   TableRow,
   TableCell,
   TableBody,
+  Paper
 } from "@mui/material";
 import AddEnrollmentModal from "./modals/AddEnrollmentModal";
 import DeleteButton from "./buttons/DeleteButton";
-import EditButton from "./buttons/EditButton_new";
+import { Add } from "@mui/icons-material";
+import EditButton from "./buttons/EditButton";
 
 export default function EnrollmentTable({ enrollment, courses, enrollments, fetchEnrollments, fetchData, users }) {
   const [openModal, setOpenModal] = useState(false);
@@ -34,59 +37,59 @@ export default function EnrollmentTable({ enrollment, courses, enrollments, fetc
 
   console.log("enrollments",enrollments);
   return (
-    <Box p={3}>
-      <Typography variant="h5" mb={2}>
+    <Container sx={{ mt: 4 }}>
+      <Typography variant="h5" gutterBottom>
         Manage Enrollments
       </Typography>
 
-      <Button variant="contained" color="primary" onClick={() => setOpenModal(true)}>
-        Add Enrollment
+      <Button sx={{ mb: 3 }} variant="contained" color="primary" onClick={() => setOpenModal(true)}>
+        <Add /> Add Enrollment
       </Button>
-
-      <Table sx={{ mt: 3 }}>
-        <TableHead>
-          <TableRow>
-            <TableCell>Student</TableCell>
-            <TableCell>Course</TableCell>
-            <TableCell>Grade</TableCell>
-            <TableCell>Edit</TableCell>
-            <TableCell>Drop</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-
-          {enrollments?.map((e) => (
-            <TableRow key={e.id}>
-              <TableCell>{e.student_name}</TableCell>
-              <TableCell>{e.course_name}</TableCell>
-              <TableCell>{e.grade}</TableCell>
-              <TableCell>Grade
-                <EditButton item={e} onEdit={handleEditClick} />
-                {/* <EditButton
-                  isOpen={openModal}
-                  onClose={() => setOpenModal(false)}
-                  entityName={"enrollment"}   // e.g. "course", "user", "enrollment"
-                  id={e.id}
-                  data={e}         // current record to edit
-                  fields={enrollmentFields}       // array of { name, label, type }
-                  endpoint={endpoint}     // `/api/courses`, `/api/users`, `/api/enrollments`
-                  onSave={fetchData}        // callback after successful update
-                  fetchData={fetchData} 
-                  /> */}
-              </TableCell>
-              <TableCell>
-                <DeleteButton 
-                  entityName="enrollment"
-                  id={e.id}
-                  fetchData={() => fetchData()}
-                  endpoint={`${process.env.REACT_APP_API_URL}/api/enrollments`}
-                  fetch={fetchEnrollments}
-                />
-              </TableCell>
+      <TableContainer component={Paper} sx={{ borderRadius: 2, mb: 3}}>
+        <Table>
+          <TableHead sx={{ backgroundColor: "primary.main" }}>
+            <TableRow>
+              <TableCell sx={{ color: "white" }}>Student</TableCell>
+              <TableCell sx={{ color: "white" }}>Course</TableCell>
+              <TableCell sx={{ color: "white" }}>Grade</TableCell>
+              <TableCell sx={{ color: "white" }}>Edit</TableCell>
+              <TableCell sx={{ color: "white" }}>Drop</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHead>
+          <TableBody>
+            {enrollments?.map((e) => (
+              <TableRow key={e.id}>
+                <TableCell>{e.student_name}</TableCell>
+                <TableCell>{e.course_name}</TableCell>
+                <TableCell>{e.grade}</TableCell>
+                <TableCell>
+                  {/* <EditButton item={e} onEdit={handleEditClick} /> */}
+                  <EditButton
+                    isOpen={openModal}
+                    onClose={() => setOpenModal(false)}
+                    entityName={"enrollment"}   // e.g. "course", "user", "enrollment"
+                    id={e.id}
+                    data={e}         // current record to edit
+                    fields={enrollmentFields}       // array of { name, label, type }
+                    endpoint={endpoint}     // `/api/courses`, `/api/users`, `/api/enrollments`
+                    onSave={fetchData}        // callback after successful update
+                    fetchData={fetchData} 
+                    />
+                </TableCell>
+                <TableCell>
+                  <DeleteButton 
+                    entityName="enrollment"
+                    id={e.id}
+                    fetchData={() => fetchData()}
+                    endpoint={`${process.env.REACT_APP_API_URL}/api/enrollments`}
+                    fetch={fetchEnrollments}
+                  />
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
 
       <AddEnrollmentModal
         isOpen={openModal}
@@ -96,6 +99,6 @@ export default function EnrollmentTable({ enrollment, courses, enrollments, fetc
         // users={users}
         courses={courses}
       />
-    </Box>
+    </Container>
   );
 }
