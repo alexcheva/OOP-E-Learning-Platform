@@ -13,7 +13,7 @@ import {
   Box,
   Container,
 } from "@mui/material";
-import { Edit, Delete } from "@mui/icons-material";
+import { Add, Edit, Delete } from "@mui/icons-material";
 import EditModal from "./modals/EditModal";
 import AddUserModal from "./modals/AddUserModal";
 
@@ -58,8 +58,8 @@ export default function AllUsers() {
       <Typography variant="h5" gutterBottom>
         Manage Users
       </Typography>
-      <Button variant="contained" color="primary" onClick={() => setOpenUserModal(true)}>
-        Add User
+      <Button variant="contained" color="primary" sx={{ mb: 3 }} onClick={() => setOpenUserModal(true)}>
+        <Add />Add User
       </Button>
       <TableContainer component={Paper} sx={{ borderRadius: 2 }}>
         <Table>
